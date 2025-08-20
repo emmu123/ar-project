@@ -4,84 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR Server Visualization</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.0/aframe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ar.js/2.2.2/aframe-ar.min.js"></script>
     <style>
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             color: white;
             overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
         }
 
         .controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .server-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .server-card {
-            background: linear-gradient(135deg, #2d3748, #4a5568);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .server-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
-        }
-
-        .server-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #00ffff;
-        }
-
-        .metric {
             display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            align-items: center;
-        }
-
-        .metric-bar {
-            width: 60%;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .metric-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-
-        .metric-value {
-            font-weight: bold;
-            min-width: 50px;
-            text-align: right;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
         .ar-button {
@@ -93,182 +52,347 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 10px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .ar-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
         }
 
-        .ar-scene {
-            position: fixed;
+        .ar-button::before {
+            content: '';
+            position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            z-index: 999;
-            display: none;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
 
-        .ar-scene.active {
-            display: block;
+        .ar-button:hover::before {
+            left: 100%;
         }
 
-        .ar-overlay {
-            position: fixed;
-            top: 100px;
-            left: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 1001;
-            display: none;
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        .ar-overlay.active {
-            display: block;
+        .server-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .exit-ar {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1002;
-            background: #ff4757;
+        .server-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff, #ff0080);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .server-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+
+        .server-card:hover::before {
+            opacity: 1;
+        }
+
+        .server-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
         }
 
         .status-indicator {
-            width: 12px;
-            height: 12px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .status-online { background: #2ecc71; }
-        .status-warning { background: #f39c12; }
-        .status-critical { background: #e74c3c; }
-
-        .pulse {
+            margin-right: 12px;
+            box-shadow: 0 0 10px currentColor;
             animation: pulse 2s infinite;
         }
 
+        .status-online { background: #00ff88; }
+        .status-warning { background: #ffaa00; }
+        .status-critical { background: #ff4757; }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
 
-        .ar-instructions {
-            text-align: center;
-            margin: 20px;
-            padding: 20px;
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .metric-bar {
+            flex: 1;
+            height: 25px;
             background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 0 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: all 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .cpu-fill { background: linear-gradient(90deg, #00ff88, #ffaa00, #ff4757); }
+        .ram-fill { background: linear-gradient(90deg, #00d4ff, #667eea, #764ba2); }
+        .disk-fill { background: linear-gradient(90deg, #f093fb, #f5576c, #4facfe); }
+
+        .metric-value {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: right;
+            font-size: 16px;
+        }
+
+        .ar-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        .ar-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .server-3d {
+            perspective: 1000px;
+            height: 200px;
+            position: relative;
+        }
+
+        .server-box {
+            width: 80px;
+            height: var(--height, 60px);
+            background: var(--color, #00ff88);
+            margin: 0 auto;
+            border-radius: 8px;
+            transform: rotateX(-20deg) rotateY(20deg);
+            transition: all 0.5s ease;
+            position: relative;
+            box-shadow: 
+                0 0 20px var(--color, #00ff88),
+                inset 0 0 20px rgba(255,255,255,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .server-box::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, transparent, var(--color, #00ff88), transparent);
+            border-radius: 8px;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: rotateX(-20deg) rotateY(20deg) translateY(0px); }
+            50% { transform: rotateX(-20deg) rotateY(20deg) translateY(-10px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .server-label {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .server-stats {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00d4ff;
+            border-radius: 50%;
+            animation: particle-float 8s infinite linear;
+            box-shadow: 0 0 6px #00d4ff;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .coming-soon {
+            background: linear-gradient(135deg, #ff9a56, #ff6b95);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
             border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="controls">
-        <h1 style="margin: 0 0 20px 0; text-align: center; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            🚀 AR Server Dashboard
-        </h1>
-        
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="ar-button" onclick="startAR()">🥽 Launch AR View</button>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AR Server Dashboard</h1>
+            <p style="font-size: 1.2em; opacity: 0.8;">Next-Generation Server Monitoring with AR Visualization</p>
+        </div>
+
+        <div class="controls">
             <button class="ar-button" onclick="simulateLoad()">⚡ Simulate Load</button>
             <button class="ar-button" onclick="resetServers()">🔄 Reset All</button>
+            <button class="ar-button" onclick="toggleRealtime()">📊 <span id="realtimeText">Pause</span> Updates</button>
         </div>
 
         <div class="server-grid" id="serverGrid">
             <!-- Server cards will be populated by JavaScript -->
         </div>
-    </div>
 
-    <div class="ar-scene" id="arScene">
-        <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-            <a-assets>
-                <a-mixin id="server-base" 
-                         geometry="primitive: box; width: 1; depth: 1"
-                         animation__mouseenter="property: scale; to: 1.1 1.1 1.1; startEvents: mouseenter; dur: 200"
-                         animation__mouseleave="property: scale; to: 1 1 1; startEvents: mouseleave; dur: 200">
-                </a-mixin>
-            </a-assets>
+        <div class="ar-section">
+            <h2 style="margin-top: 0;">🥽 AR Visualization Preview</h2>
+            <div class="coming-soon">Interactive 3D Server Representation</div>
+            
+            <div class="ar-preview" id="arPreview">
+                <!-- 3D server representations will be populated here -->
+            </div>
 
-            <!-- Marker-based AR -->
-            <a-marker preset="hiro" id="markerA">
-                <!-- Server 1 -->
-                <a-box id="server1-ar" 
-                       mixin="server-base"
-                       position="-2 0.5 0" 
-                       material="color: #00ff00; opacity: 0.8; transparent: true"
-                       text="value: Server 1\nCPU: 45%; align: center; color: white; position: 0 1.5 0">
-                    <a-cylinder id="cpu1-ring" 
-                               position="0 1 0" 
-                               radius="0.6" 
-                               height="0.1" 
-                               material="color: #ffff00; opacity: 0.6; transparent: true"
-                               animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
-                    </a-cylinder>
-                </a-box>
-
-                <!-- Server 2 -->
-                <a-box id="server2-ar" 
-                       mixin="server-base"
-                       position="0 0.5 0" 
-                       material="color: #ffff00; opacity: 0.8; transparent: true"
-                       text="value: Server 2\nCPU: 72%; align: center; color: white; position: 0 1.5 0">
-                    <a-cylinder id="cpu2-ring" 
-                               position="0 1 0" 
-                               radius="0.6" 
-                               height="0.1" 
-                               material="color: #ff8800; opacity: 0.6; transparent: true"
-                               animation="property: rotation; to: 0 360 0; loop: true; dur: 2000">
-                    </a-cylinder>
-                </a-box>
-
-                <!-- Server 3 -->
-                <a-box id="server3-ar" 
-                       mixin="server-base"
-                       position="2 0.5 0" 
-                       material="color: #ff4444; opacity: 0.8; transparent: true"
-                       text="value: Server 3\nCPU: 89%; align: center; color: white; position: 0 1.5 0">
-                    <a-cylinder id="cpu3-ring" 
-                               position="0 1 0" 
-                               radius="0.6" 
-                               height="0.1" 
-                               material="color: #ff0000; opacity: 0.6; transparent: true"
-                               animation="property: rotation; to: 0 360 0; loop: true; dur: 1000">
-                    </a-cylinder>
-                </a-box>
-
-                <!-- Particles for network activity -->
-                <a-entity id="particles" 
-                         position="0 3 0"
-                         particle-system="preset: snow; particleCount: 50; color: #00ffff, #ffffff">
-                </a-entity>
-
-                <!-- Ambient lighting -->
-                <a-light type="ambient" color="#404040"></a-light>
-                <a-light type="point" position="0 4 0" color="#ffffff"></a-light>
-            </a-marker>
-
-            <a-entity camera></a-entity>
-        </a-scene>
-        
-        <button class="ar-button exit-ar" onclick="exitAR()">❌ Exit AR</button>
-    </div>
-
-    <div class="ar-overlay" id="arOverlay">
-        <div class="ar-instructions">
-            <h2>📱 AR Instructions</h2>
-            <p>1. Point your camera at the <strong>Hiro marker</strong> (QR-like pattern)</p>
-            <p>2. Keep the marker in view to see your servers in 3D</p>
-            <p>3. Server height = CPU usage, Color = performance status</p>
-            <p>4. Spinning rings show activity levels</p>
-            <a href="https://github.com/AR-js-org/AR.js/blob/master/data/images/hiro.png" target="_blank" style="color: #00ffff;">Download Hiro Marker →</a>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <span class="feature-icon">📱</span>
+                    <h3>Mobile AR Ready</h3>
+                    <p>Point your phone at servers to see real-time 3D metrics floating above them</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Interactive Controls</h3>
+                    <p>Tap servers in AR to restart, scale, or access detailed diagnostics</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Real-time Sync</h3>
+                    <p>AR view updates instantly with live server data and alerts</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🌐</span>
+                    <h3>Multi-Server View</h3>
+                    <p>See all your servers in one AR space with comparative analytics</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -283,7 +407,8 @@
                 disk: 34,
                 network: 123,
                 status: "online",
-                uptime: "15d 4h 23m"
+                uptime: "15d 4h 23m",
+                location: "US-East-1"
             },
             {
                 name: "Database Beta", 
@@ -293,7 +418,8 @@
                 disk: 56,
                 network: 89,
                 status: "warning",
-                uptime: "8d 12h 45m"
+                uptime: "8d 12h 45m",
+                location: "EU-West-1"
             },
             {
                 name: "App Server Gamma",
@@ -303,18 +429,22 @@
                 disk: 78,
                 network: 234,
                 status: "critical",
-                uptime: "3d 2h 15m"
+                uptime: "3d 2h 15m",
+                location: "Asia-Pacific"
             }
         ];
+
+        let realtimeUpdates = true;
+        let updateInterval;
 
         function getStatusClass(status) {
             return `status-${status}`;
         }
 
         function getStatusColor(cpu) {
-            if (cpu < 50) return "#00ff00";
-            if (cpu < 80) return "#ffff00"; 
-            return "#ff4444";
+            if (cpu < 50) return "#00ff88";
+            if (cpu < 80) return "#ffaa00"; 
+            return "#ff4757";
         }
 
         function renderServerCards() {
@@ -323,39 +453,40 @@
             
             servers.forEach((server, index) => {
                 const card = document.createElement('div');
-                card.className = 'server-card pulse';
+                card.className = 'server-card';
                 card.innerHTML = `
                     <div class="server-name">
                         <span class="status-indicator ${getStatusClass(server.status)}"></span>
                         ${server.name}
+                        <span style="margin-left: auto; font-size: 0.8em; opacity: 0.7;">${server.location}</span>
                     </div>
                     <div class="metric">
-                        <span>CPU Usage</span>
+                        <span class="metric-label">CPU Usage</span>
                         <div class="metric-bar">
-                            <div class="metric-fill" style="width: ${server.cpu}%"></div>
+                            <div class="metric-fill cpu-fill" style="width: ${server.cpu}%"></div>
                         </div>
                         <span class="metric-value">${server.cpu}%</span>
                     </div>
                     <div class="metric">
-                        <span>Memory</span>
+                        <span class="metric-label">Memory</span>
                         <div class="metric-bar">
-                            <div class="metric-fill" style="width: ${server.ram}%"></div>
+                            <div class="metric-fill ram-fill" style="width: ${server.ram}%"></div>
                         </div>
                         <span class="metric-value">${server.ram}%</span>
                     </div>
                     <div class="metric">
-                        <span>Disk Usage</span>
+                        <span class="metric-label">Disk Usage</span>
                         <div class="metric-bar">
-                            <div class="metric-fill" style="width: ${server.disk}%"></div>
+                            <div class="metric-fill disk-fill" style="width: ${server.disk}%"></div>
                         </div>
                         <span class="metric-value">${server.disk}%</span>
                     </div>
                     <div class="metric">
-                        <span>Network I/O</span>
+                        <span class="metric-label">Network I/O</span>
                         <span class="metric-value">${server.network} MB/s</span>
                     </div>
                     <div class="metric">
-                        <span>Uptime</span>
+                        <span class="metric-label">Uptime</span>
                         <span class="metric-value">${server.uptime}</span>
                     </div>
                 `;
@@ -363,51 +494,34 @@
             });
         }
 
-        function updateARServers() {
+        function render3DServers() {
+            const preview = document.getElementById('arPreview');
+            preview.innerHTML = '';
+            
             servers.forEach((server, index) => {
-                const serverEl = document.getElementById(`server${index + 1}-ar`);
-                const ringEl = document.getElementById(`cpu${index + 1}-ring`);
+                const container = document.createElement('div');
+                container.className = 'server-3d';
                 
-                if (serverEl) {
-                    // Update server box height based on CPU
-                    const height = 0.5 + (server.cpu / 100) * 2;
-                    serverEl.setAttribute('geometry', `primitive: box; width: 1; depth: 1; height: ${height}`);
-                    serverEl.setAttribute('position', `${-2 + index * 2} ${height/2} 0`);
-                    
-                    // Update color based on performance
-                    const color = getStatusColor(server.cpu);
-                    serverEl.setAttribute('material', `color: ${color}; opacity: 0.8; transparent: true`);
-                    
-                    // Update text
-                    serverEl.setAttribute('text', `value: ${server.name}\\nCPU: ${server.cpu}%; align: center; color: white; position: 0 ${height + 0.5} 0`);
-                    
-                    // Update ring animation speed
-                    if (ringEl) {
-                        const speed = Math.max(500, 4000 - (server.cpu * 40));
-                        ringEl.setAttribute('animation', `property: rotation; to: 0 360 0; loop: true; dur: ${speed}`);
-                        ringEl.setAttribute('position', `0 ${height + 0.3} 0`);
-                    }
-                }
+                const height = Math.max(60, (server.cpu / 100) * 150);
+                const color = getStatusColor(server.cpu);
+                
+                container.innerHTML = `
+                    <div class="server-box" style="--height: ${height}px; --color: ${color}">
+                    </div>
+                    <div class="server-label">${server.name}</div>
+                    <div class="server-stats">CPU: ${server.cpu}% | RAM: ${server.ram}%</div>
+                `;
+                
+                preview.appendChild(container);
             });
-        }
-
-        function startAR() {
-            document.getElementById('arScene').classList.add('active');
-            document.getElementById('arOverlay').classList.add('active');
-            updateARServers();
-        }
-
-        function exitAR() {
-            document.getElementById('arScene').classList.remove('active');
-            document.getElementById('arOverlay').classList.remove('active');
         }
 
         function simulateLoad() {
             servers.forEach(server => {
-                server.cpu = Math.min(100, server.cpu + Math.random() * 20 - 5);
-                server.ram = Math.min(100, server.ram + Math.random() * 15 - 7);
-                server.disk = Math.min(100, server.disk + Math.random() * 10 - 3);
-                server.network = Math.max(0, server.network + Math.random() * 50 - 25);
+                server.cpu = Math.min(100, Math.max(0, server.cpu + Math.random() * 30 - 10));
+                server.ram = Math.min(100, Math.max(0, server.ram + Math.random() * 20 - 8));
+                server.disk = Math.min(100, Math.max(0, server.disk + Math.random() * 15 - 5));
+                server.network = Math.max(0, server.network + Math.random() * 100 - 40);
                 
                 // Update status based on CPU
                 if (server.cpu < 60) server.status = "online";
@@ -416,52 +530,89 @@
             });
             
             renderServerCards();
-            updateARServers();
+            render3DServers();
         }
 
         function resetServers() {
-            servers[0].cpu = 45; servers[0].ram = 67; servers[0].status = "online";
-            servers[1].cpu = 72; servers[1].ram = 84; servers[1].status = "warning";
-            servers[2].cpu = 89; servers[2].ram = 91; servers[2].status = "critical";
+            servers[0].cpu = 45; servers[0].ram = 67; servers[0].disk = 34; servers[0].status = "online";
+            servers[1].cpu = 72; servers[1].ram = 84; servers[1].disk = 56; servers[1].status = "warning";
+            servers[2].cpu = 89; servers[2].ram = 91; servers[2].disk = 78; servers[2].status = "critical";
             
             renderServerCards();
-            updateARServers();
+            render3DServers();
         }
 
-        // Auto-update every 3 seconds
-        setInterval(() => {
-            servers.forEach(server => {
-                server.cpu += (Math.random() - 0.5) * 4;
-                server.cpu = Math.max(0, Math.min(100, server.cpu));
-                
-                server.ram += (Math.random() - 0.5) * 3;
-                server.ram = Math.max(0, Math.min(100, server.ram));
-                
-                server.network += (Math.random() - 0.5) * 20;
-                server.network = Math.max(0, server.network);
-                
-                // Update status
-                if (server.cpu < 60) server.status = "online";
-                else if (server.cpu < 85) server.status = "warning"; 
-                else server.status = "critical";
-            });
+        function toggleRealtime() {
+            realtimeUpdates = !realtimeUpdates;
+            document.getElementById('realtimeText').textContent = realtimeUpdates ? 'Pause' : 'Resume';
             
-            renderServerCards();
-            updateARServers();
-        }, 3000);
+            if (realtimeUpdates) {
+                startRealtimeUpdates();
+            } else {
+                clearInterval(updateInterval);
+            }
+        }
+
+        function startRealtimeUpdates() {
+            updateInterval = setInterval(() => {
+                if (!realtimeUpdates) return;
+                
+                servers.forEach(server => {
+                    server.cpu += (Math.random() - 0.5) * 6;
+                    server.cpu = Math.max(0, Math.min(100, server.cpu));
+                    
+                    server.ram += (Math.random() - 0.5) * 4;
+                    server.ram = Math.max(0, Math.min(100, server.ram));
+                    
+                    server.disk += (Math.random() - 0.5) * 2;
+                    server.disk = Math.max(0, Math.min(100, server.disk));
+                    
+                    server.network += (Math.random() - 0.5) * 30;
+                    server.network = Math.max(0, server.network);
+                    
+                    // Update status
+                    if (server.cpu < 60) server.status = "online";
+                    else if (server.cpu < 85) server.status = "warning"; 
+                    else server.status = "critical";
+                });
+                
+                renderServerCards();
+                render3DServers();
+            }, 2500);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+                container.appendChild(particle);
+            }
+        }
 
         // Initialize
-        renderServerCards();
-        
-        // Handle AR scene clicks
-        document.addEventListener('DOMContentLoaded', () => {
-            const scene = document.querySelector('a-scene');
-            if (scene) {
-                scene.addEventListener('loaded', () => {
-                    console.log('AR Scene loaded successfully!');
-                });
+        function init() {
+            try {
+                renderServerCards();
+                render3DServers();
+                createParticles();
+                startRealtimeUpdates();
+                console.log('AR Server Dashboard initialized successfully!');
+            } catch (error) {
+                console.error('Initialization error:', error);
             }
-        });
+        }
+
+        // Safe initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>

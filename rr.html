@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandeur Hotels - Luxury Redefined</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #c9a96e;
+            --primary-dark: #1a1a1a;
+            --accent-blue: #2c5aa0;
+            --light-bg: #f8f9fa;
+            --text-dark: #2c2c2c;
+            --text-light: #6c757d;
+            --white: #ffffff;
+            --success: #28a745;
+            --gradient-gold: linear-gradient(135deg, #c9a96e 0%, #b8956a 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* Enhanced Navbar */
+        .navbar-custom {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-custom.scrolled {
+            background: rgba(26, 26, 26, 0.98);
+            padding: 0.5rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-gold) !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--white) !important;
+            font-weight: 500;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-gold) !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-gold {
+            background: var(--gradient-gold);
+            border: none;
+            color: var(--white);
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(201, 169, 110, 0.4);
+            color: var(--white);
+        }
+
+        /* Hero Section with Advanced Carousel */
+        .hero-carousel {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(26, 26, 26, 0.6) 0%, rgba(201, 169, 110, 0.2) 100%);
+            z-index: 1;
+        }
+
+        .carousel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--white);
+            z-index: 2;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .carousel-content h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .carousel-content p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            animation: fadeInUp 1.2s ease-out 0.3s both;
+        }
+
+        .quote-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1.2s ease-out 0.1s both;
+        }
+
+        /* Glassmorphism Booking Form */
+        .booking-form-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 100%;
+            color: var(--white);
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+        }
+
+        .form-control-glass {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .form-control-glass:focus {
+            background: var(--white);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 0.2rem rgba(201, 169, 110, 0.25);
+            outline: none;
+        }
+
+        .form-label-glass {
+            color: var(--white);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Enhanced Features Section */
+        .features-section {
+            padding: 6rem 0;
+            background: var(--light-bg);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 90px;
+            height: 90px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: var(--white);
+            font-size: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Enhanced Room Cards */
+        .rooms-section {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .room-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            height: 100%;
+            position: relative;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .room-image {
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), transparent);
+            transition: opacity 0.3s ease;
+        }
+
+        .room-card:hover .room-image::before {
+            opacity: 0;
+        }
+
+        .room-price-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-gold);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .room-content {
+            padding: 2.5rem;
+        }
+
+        .room-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .amenity-tag {
+            background: var(--light-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .amenity-tag i {
+            color: var(--primary-gold);
+        }
+
+        /* Testimonials with Enhanced Design */
+        .testimonials-section {
+            padding: 6rem 0;
+            background: var(--primary-dark);
+            color: var(--white);
+            position: relative;
+        }
+
+        .testimonials-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><text y="15" font-size="20" fill="%23c9a96e" opacity="0.1">★</text></svg>') repeat;
+            opacity: 0.1;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        /* Enhanced CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #1e4a7a 100%);
+            color: var(--white);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        /* Enhanced Footer */
+        .footer {
+            background: #0a0a0a;
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-section h5 {
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-gold);
+            color: var(--white);
+            text-align: center;
+            line-height: 45px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(201, 169, 110, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            .carousel-content h1 {
+                font-size: 3rem;
+            }
+            
+            .carousel-content p {
+                font-size: 1.2rem;
+            }
+            
+            .booking-form-glass {
+                padding: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .carousel-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .carousel-content p {
+                font-size: 1rem;
+            }
+            
+            .booking-form-glass {
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .feature-card,
+            .room-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Enhanced Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-crown me-2"></i>Grandeur
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#rooms">Rooms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#amenities">Amenities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-gold" href="#booking">Book Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Enhanced Hero Carousel -->
+    <section id="home" class="hero-carousel">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
+            <div class="carousel-inner">
+                <!-- Slide 1 - Luxury Suite -->
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80')">
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-content">
+                        <div class="quote-badge">
+                            <i class="fas fa-star me-2"></i>
+                            Luxury Redefined • Premium Service • Unforgettable Experience
+                        </div>
+                        <h1>Where Luxury Meets Perfection</h1>
+                        <p>Immerse yourself in unparalleled elegance with breathtaking views, world-class amenities, and personalized service that exceeds every expectation.</p>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 - Spa & Wellness -->
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2080&q=80')">
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-content">
+                        <div class="quote-badge">
+                            <i class="fas fa-spa me-2"></i>
+                            Wellness Sanctuary • Rejuvenation • Tranquility
+                        </div>
+                        <h1>Rejuvenate Your Mind & Soul</h1>
+                        <p>Discover our award-winning spa and wellness facilities designed to restore balance and provide the ultimate relaxation experience.</p>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 - Fine Dining -->
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
+                    <div class="carousel-overlay"></div>
+                    <div class="carousel-content">
+                        <div class="quote-badge">
+                            <i class="fas fa-utensils me-2"></i>
+                            Culinary Excellence • Master Chefs • Gourmet Experience
+                        </div>
+                        <h1>Culinary Artistry Awaits</h1>
+                        <p>Savor extraordinary cuisine crafted by renowned chefs in our elegant dining venues, where every meal becomes a memorable celebration.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Carousel Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <!-- Glassmorphism Booking Form -->
+        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5" id="booking">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="booking-form-glass">
+                            <form id="bookingForm">
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-lg-3 col-md-6">
+                                        <label for="destination" class="form-label form-label-glass">Destination</label>
+                                        <input type="text" class="form-control form-control-glass" id="destination" placeholder="Where to?" required>
+                                    </div>
+                                    <div class="col-lg-2 col-md-6">
+                                        <label for="checkin" class="form-label form-label-glass">Check-in</label>
+                                        <input type="date" class="form-control form-control-glass" id="checkin" required>
+                                    </div>
+                                    <div class="col-lg-2 col-md-6">
+                                        <label for="checkout" class="form-label form-label-glass">Check-out</label>
+                                        <input type="date" class="form-control form-control-glass" id="checkout" required>
+                                    </div>
+                                    <div class="col-lg-2 col-md-6">
+                                        <label for="guests" class="form-label form-label-glass">Guests</label>
+                                        <select class="form-control form-control-glass" id="guests" required>
+                                            <option value="">Select</option>
+                                            <option value="1">1 Guest</option>
+                                            <option value="2">2 Guests</option>
+                                            <option value="3">3 Guests</option>
+                                            <option value="4">4 Guests</option>
+                                            <option value="5+">5+ Guests</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="submit" class="btn btn-gold w-100 py-3">
+                                            <i class="fas fa-search me-2"></i>Find Perfect Stay
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12 text-center">
+                                        <small class="text-white-50">
+                                            <i class="fas fa-shield-alt me-1"></i>
+                                            Best Rate Guarantee • Free Cancellation • Instant Confirmation
+                                        </small>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Features Section -->
+    <section id="amenities" class="features-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" data-aos="fade-up">
+                    <h2 class="section-title">Exceptional Amenities</h2>
+                    <p class="section-subtitle">Experience world-class facilities and services designed to exceed your every expectation</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <h4 class="mb-3">Luxury Spa & Wellness</h4>
+                        <p class="text-muted">Rejuvenate your body and soul with our award-winning spa treatments, wellness programs, and state-of-the-art fitness facilities.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h4 class="mb-3">Gourmet Dining</h4>
+                        <p class="text-muted">Savor exquisite cuisine prepared by world-renowned chefs in our elegant restaurants and sophisticated dining venues.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-swimming-pool"></i>
+                        </div>
+                        <h4 class="mb-3">Infinity Pool & Terrace</h4>
+                        <p class="text-muted">Take a refreshing dip in our stunning rooftop infinity pool while enjoying panoramic city views and sunset cocktails.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        <h4 class="mb-3">Premium Concierge</h4>
+                        <p class="text-muted">Our dedicated concierge team is available 24/7 to arrange experiences, reservations, and fulfill your every request.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Rooms Section -->
+    <section id="rooms" class="rooms-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" data-aos="fade-up">
+                    <h2 class="section-title">Luxurious Accommodations</h2>
+                    <p class="section-subtitle">Choose from our meticulously designed rooms and suites, each offering a unique luxury experience</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Deluxe Ocean Suite -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="room-card">
+                        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
+                            <div class="room-price-tag">$399/night</div>
+                        </div>
+                        <div class="room-content">
+                            <h4 class="mb-3">Deluxe Ocean Suite</h4>
+                            <p class="text-muted mb-3">Spectacular oceanfront suite featuring a private balcony, premium amenities, and breathtaking sunrise views. Perfect for romantic getaways.</p>
+                            <div class="room-amenities">
+                                <span class="amenity-tag">
+                                    <i class="fas fa-bed"></i>King Bed
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-door-open"></i>Private Balcony
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-coffee"></i>Premium Minibar
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-bath"></i>Marble Bathroom
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-expand-arrows-alt me-1"></i>65 sqm • 
+                                    <i class="fas fa-users me-1"></i>Max 3 guests
+                                </small>
+                                <button class="btn btn-gold">Book Suite</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive City View -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="room-card">
+                        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80')">
+                            <div class="room-price-tag">$279/night</div>
+                        </div>
+                        <div class="room-content">
+                            <h4 class="mb-3">Executive City View</h4>
+                            <p class="text-muted mb-3">Sophisticated business-friendly room with panoramic city views, dedicated workspace, and executive lounge access for the modern traveler.</p>
+                            <div class="room-amenities">
+                                <span class="amenity-tag">
+                                    <i class="fas fa-bed"></i>Queen Bed
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-laptop"></i>Work Desk
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-crown"></i>Lounge Access
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-phone"></i>Business Line
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-expand-arrows-alt me-1"></i>45 sqm • 
+                                    <i class="fas fa-users me-1"></i>Max 2 guests
+                                </small>
+                                <button class="btn btn-gold">Book Room</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presidential Suite -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="room-card">
+                        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
+                            <div class="room-price-tag">$899/night</div>
+                        </div>
+                        <div class="room-content">
+                            <h4 class="mb-3">Presidential Suite</h4>
+                            <p class="text-muted mb-3">The pinnacle of luxury featuring separate living areas, private terrace, personal butler service, and exclusive amenities for VIP guests.</p>
+                            <div class="room-amenities">
+                                <span class="amenity-tag">
+                                    <i class="fas fa-home"></i>Living Room
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-user-tie"></i>Butler Service
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-car"></i>Limo Transfer
+                                </span>
+                                <span class="amenity-tag">
+                                    <i class="fas fa-champagne-glasses"></i>Premium Bar
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-expand-arrows-alt me-1"></i>120 sqm • 
+                                    <i class="fas fa-users me-1"></i>Max 6 guests
+                                </small>
+                                <button class="btn btn-gold">Book Suite</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Amenities Grid -->
+            <div class="row mt-5">
+                <div class="col-12" data-aos="fade-up">
+                    <h3 class="text-center mb-4">Every Room Includes</h3>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-wifi text-primary me-3 fs-4"></i>
+                        <div>
+                            <strong>High-Speed WiFi</strong>
+                            <br><small class="text-muted">Complimentary internet access</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-room-service text-primary me-3 fs-4"></i>
+                        <div>
+                            <strong>24/7 Room Service</strong>
+                            <br><small class="text-muted">Gourmet dining anytime</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-shield-alt text-primary me-3 fs-4"></i>
+                        <div>
+                            <strong>Safe & Secure</strong>
+                            <br><small class="text-muted">In-room safety deposit box</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <i class="fas fa-broom text-primary me-3 fs-4"></i>
+                        <div>
+                            <strong>Daily Housekeeping</strong>
+                            <br><small class="text-muted">Twice daily service available</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" data-aos="fade-up">
+                    <h2 class="section-title text-white">Guest Experiences</h2>
+                    <p class="section-subtitle text-white-50">Discover why discerning travelers choose Grandeur Hotels for their most memorable stays</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <p class="mb-4 fst-italic">"An absolutely extraordinary experience from arrival to departure. The Presidential Suite exceeded every expectation, and the personalized butler service made us feel like royalty. The attention to detail is unmatched."</p>
+                        <h5 class="mb-1" style="color: var(--primary-gold);">Sarah Mitchell</h5>
+                        <small class="text-white-50">CEO, New York</small>
+                        <div class="mt-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <p class="mb-4 fst-italic">"The Ocean Suite provided the perfect romantic setting for our anniversary. Waking up to sunrise views over the ocean was magical. The spa treatments were world-class, and the dining experience was unforgettable."</p>
+                        <h5 class="mb-1" style="color: var(--primary-gold);">James & Emma Wilson</h5>
+                        <small class="text-white-50">London, UK</small>
+                        <div class="mt-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <p class="mb-4 fst-italic">"Business travel has never been this luxurious. The Executive room's workspace was perfect for productivity, and the concierge team handled all my meeting arrangements flawlessly. Exceptional hospitality."</p>
+                        <h5 class="mb-1" style="color: var(--primary-gold);">Michael Chen</h5>
+                        <small class="text-white-50">Singapore</small>
+                        <div class="mt-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center" data-aos="fade-up">
+                    <h2 class="display-4 mb-4">Ready for Extraordinary?</h2>
+                    <p class="lead mb-5">Join thousands of satisfied guests who have experienced the pinnacle of luxury hospitality. Your perfect stay awaits.</p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                        <a href="#booking" class="btn btn-gold btn-lg px-5 py-3">
+                            <i class="fas fa-calendar-check me-2"></i>Book Your Stay
+                        </a>
+                        <a href="#rooms" class="btn btn-outline-light btn-lg px-5 py-3">
+                            <i class="fas fa-eye me-2"></i>Explore Rooms
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h3 class="mb-4">
+                        <i class="fas fa-crown me-2" style="color: var(--primary-gold);"></i>
+                        Grandeur Hotels
+                    </h3>
+                    <p class="mb-4 text-white-50">Where luxury meets perfection. Experience unparalleled hospitality, world-class amenities, and memories that last a lifetime.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#rooms" class="text-decoration-none text-white-50 hover-gold">Rooms & Suites</a></li>
+                            <li class="mb-2"><a href="#amenities" class="text-decoration-none text-white-50 hover-gold">Amenities</a></li>
+                            <li class="mb-2"><a href="#dining" class="text-decoration-none text-white-50 hover-gold">Dining</a></li>
+                            <li class="mb-2"><a href="#spa" class="text-decoration-none text-white-50 hover-gold">Spa & Wellness</a></li>
+                            <li class="mb-2"><a href="#events" class="text-decoration-none text-white-50 hover-gold">Events</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5>Services</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#concierge" class="text-decoration-none text-white-50 hover-gold">Concierge</a></li>
+                            <li class="mb-2"><a href="#transportation" class="text-decoration-none text-white-50 hover-gold">Transportation</a></li>
+                            <li class="mb-2"><a href="#business" class="text-decoration-none text-white-50 hover-gold">Business Center</a></li>
+                            <li class="mb-2"><a href="#valet" class="text-decoration-none text-white-50 hover-gold">Valet Parking</a></li>
+                            <li class="mb-2"><a href="#room-service" class="text-decoration-none text-white-50 hover-gold">Room Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="footer-section">
+                        <h5>Contact & Reservations</h5>
+                        <div class="mb-3">
+                            <i class="fas fa-map-marker-alt me-3" style="color: var(--primary-gold);"></i>
+                            <span class="text-white-50">
+                                123 Luxury Avenue, Premium District<br>
+                                <span class="ms-4">New York, NY 10001</span>
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <i class="fas fa-phone me-3" style="color: var(--primary-gold);"></i>
+                            <a href="tel:+15551234567" class="text-white-50 text-decoration-none">+1 (555) 123-4567</a>
+                        </div>
+                        <div class="mb-3">
+                            <i class="fas fa-envelope me-3" style="color: var(--primary-gold);"></i>
+                            <a href="mailto:reservations@grandeurhotels.com" class="text-white-50 text-decoration-none">reservations@grandeurhotels.com</a>
+                        </div>
+                        <div class="mb-3">
+                            <i class="fas fa-clock me-3" style="color: var(--primary-gold);"></i>
+                            <span class="text-white-50">24/7 Reservations & Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4" style="border-color: #333;">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-white-50">&copy; 2025 Grandeur Hotels. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#privacy" class="text-white-50 text-decoration-none me-3 hover-gold">Privacy Policy</a>
+                    <a href="#terms" class="text-white-50 text-decoration-none me-3 hover-gold">Terms of Service</a>
+                    <a href="#accessibility" class="text-white-50 text-decoration-none hover-gold">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic'
+        });
+
+        // Enhanced navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar-custom');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Enhanced booking form functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const todayString = today.toISOString().split('T')[0];
+            const tomorrowString = tomorrow.toISOString().split('T')[0];
+
+            const checkinInput = document.getElementById('checkin');
+            const checkoutInput = document.getElementById('checkout');
+
+            // Set minimum dates
+            checkinInput.setAttribute('min', todayString);
+            checkoutInput.setAttribute('min', tomorrowString);
+
+            // Set default values for better UX
+            checkinInput.value = todayString;
+            checkoutInput.value = tomorrowString;
+
+            // Dynamic checkout date update
+            checkinInput.addEventListener('change', function() {
+                const selectedCheckin = new Date(this.value);
+                const minCheckout = new Date(selectedCheckin);
+                minCheckout.setDate(minCheckout.getDate() + 1);
+                
+                const minCheckoutString = minCheckout.toISOString().split('T')[0];
+                checkoutInput.setAttribute('min', minCheckoutString);
+                
+                // Update checkout if it's invalid
+                if (checkoutInput.value && checkoutInput.value <= this.value) {
+                    checkoutInput.value = minCheckoutString;
+                }
+            });
+
+            // Enhanced form submission
+            document.getElementById('bookingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    destination: document.getElementById('destination').value,
+                    checkin: document.getElementById('checkin').value,
+                    checkout: document.getElementById('checkout').value,
+                    guests: document.getElementById('guests').value
+                };
+
+                // Comprehensive validation
+                if (!formData.destination.trim()) {
+                    showAlert('Please enter your destination.', 'warning');
+                    return;
+                }
+
+                if (!formData.checkin || !formData.checkout) {
+                    showAlert('Please select both check-in and check-out dates.', 'warning');
+                    return;
+                }
+
+                if (!formData.guests) {
+                    showAlert('Please select the number of guests.', 'warning');
+                    return;
+                }
+
+                const checkinDate = new Date(formData.checkin);
+                const checkoutDate = new Date(formData.checkout);
+                const nights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+
+                if (nights <= 0) {
+                    showAlert('Check-out date must be after check-in date.', 'danger');
+                    return;
+                }
+
+                // Success feedback
+                showAlert(`🎉 Searching luxury accommodations in ${formData.destination} for ${nights} night${nights > 1 ? 's' : ''} (${formData.guests} guest${formData.guests !== '1' ? 's' : ''})`, 'success');
+                
+                // Simulate loading and redirect
+                setTimeout(() => {
+                    showAlert('Redirecting to booking results...', 'info');
+                }, 2000);
+            });
+        });
+
+        // Enhanced room booking buttons
+        document.querySelectorAll('.room-card .btn-gold').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const roomCard = this.closest('.room-card');
+                const roomName = roomCard.querySelector('h4').textContent;
+                const roomPrice = roomCard.querySelector('.room-price-tag').textContent;
+                
+                // Add visual feedback
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    showAlert(`✨ ${roomName} selected! Price: ${roomPrice}. Redirecting to booking details...`, 'success');
+                    this.innerHTML = '<i class="fas fa-check me-2"></i>Selected!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = 'Book Suite';
+                        this.disabled = false;
+                    }, 3000);
+                }, 1500);
+            });
+        });
+
+        // Enhanced smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const navbarHeight = document.querySelector('.navbar-custom').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const navbarCollapse = document.getElementById('navbarNav');
+                    if (navbarCollapse.classList.contains('show')) {
+                        bootstrap.Collapse.getInstance(navbarCollapse).hide();
+                    }
+                }
+            });
+        });
+
+        // Alert system for user feedback
+        function showAlert(message, type = 'info') {
+            // Remove existing alerts
+            const existingAlert = document.querySelector('.custom-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create new alert
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} alert-dismissible fade show custom-alert position-fixed`;
+            alert.style.cssText = `
+                top: 100px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                border: none;
+                border-radius: 10px;
+            `;
+            
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alert);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroElements = document.querySelectorAll('.carousel-item');
+            
+            heroElements.forEach(element => {
+                const speed = scrolled * 0.3;
+                element.style.transform = `translateY(${speed}px)`;
+            });
+        });
+
+        // Enhanced carousel auto-play with pause on hover
+        const heroCarousel = document.getElementById('heroCarousel');
+        const carousel = new bootstrap.Carousel(heroCarousel, {
+            interval: 6000,
+            wrap: true,
+            pause: 'hover'
+        });
+
+        // Add loading states for better UX
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+            
+            // Trigger initial animations
+            setTimeout(() => {
+                AOS.refresh();
+            }, 100);
+        });
+    </script>
+
+</body>
+</html>
